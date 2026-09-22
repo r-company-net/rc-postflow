@@ -56,7 +56,7 @@ v0.3.0の正式サポート対象はSQLiteのみです。PostgreSQL向けのコ�
 
 ### 1. ソースコードを取得する
 
-公開後、GitHubのRC-PostFlowリポジトリに表示される実際のURLからcloneまたはZIPを取得し、プロジェクトルートへ移動してください。公開リポジトリURLは現時点で未確定のため、このREADMEには仮のURLを記載していません。
+GitHubの[RC-PostFlowリポジトリ](https://github.com/r-company-net/rc-postflow)からcloneまたはZIPを取得し、プロジェクトルートへ移動してください。
 
 ### 2. 前提環境を確認する
 
@@ -269,7 +269,7 @@ RC-PostFlow／RC-SIP／R-Companyのロゴ・アイコンなどのブランド画
 
 ## 配布とフィードバック
 
-GitHubの公開Repository URLとIssues窓口も未確定です。確定後、このREADMEの取得手順とフィードバック窓口へ実URLを追記してください。
+公開Repositoryは[https://github.com/r-company-net/rc-postflow](https://github.com/r-company-net/rc-postflow)です。バグ報告、改善提案、フィードバックは[GitHub Issues](https://github.com/r-company-net/rc-postflow/issues)を利用してください。
 
 今回の公開版はRC-PostFlow v0.3.0で、ビルド上のバージョンも`0.3.0`です。`v0.2.0`および`v0.2.0-pre1`は過去の開発履歴で使用したタグ名ですが、初回OSS公開用の履歴には引き継ぎません。`v0.3.0`タグとGitHub Releaseはまだ作成していません。
 
@@ -277,7 +277,6 @@ GitHubの公開Repository URLとIssues窓口も未確定です。確定後、こ
 
 - ブランド資産の対象ファイルと権利帰属を最終確認し、`BRANDING.md`へ反映する
 - ブランド画像を除去・置換した配布物でもアプリケーションが動作することを確認する
-- GitHub公開Repository URLとIssues窓口を確定し、本READMEへ反映する
 - `build.gradle`、README、Release Note、`v0.3.0`タグ、GitHub Releaseのバージョン表記が一致することを最終確認する
 - 将来PostgreSQLを正式サポート対象にする場合は、実DBで接続、Migration、CRUD、Scheduler、予約投稿処理を検証する
 - 有効なAccess Tokenを使用してThreads実投稿を手動確認する

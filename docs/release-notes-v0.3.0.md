@@ -6,7 +6,7 @@
 >
 > Gitタグ: 未作成
 >
-> ステータス: 公開前レビュー用ドラフト
+> ステータス: 公開準備中
 
 ## v0.3.0の概要
 
@@ -107,21 +107,21 @@ RC-PostFlow／RC-SIP／R-Companyのロゴ・アイコンなどのブランド画
 - `build.gradle`のバージョン: `0.3.0`
 - 過去の開発履歴で使用したタグ名: `v0.2.0`、`v0.2.0-pre1`（初回OSS公開用の履歴には引き継がない）
 - `v0.3.0`タグ: 未作成
-- 公開用のroot commit: 未作成
-- Git remote: 未設定
-- GitHub Release設定／公開済みRelease: ローカルリポジトリからは確認できない
+- 公開用のroot commit: 作成済み
+- Git remote: `https://github.com/r-company-net/rc-postflow.git`
+- GitHub Release: 未作成
+- 公開Repository: `https://github.com/r-company-net/rc-postflow`
 
 公開前に`build.gradle`、`v0.3.0`タグ、GitHub Releaseのタイトルと配布物の表記が一致することを最終確認してください。本ドラフトの更新に伴うタグ作成、remote設定、push、GitHub Release公開は行っていません。
 
 ## フィードバック
 
-GitHub公開リポジトリとIssues窓口は未確定です。公開先の確定後、このセクションに実際のIssues URLと問い合わせ方法を記載してください。
+公開Repositoryは[https://github.com/r-company-net/rc-postflow](https://github.com/r-company-net/rc-postflow)です。バグ報告、改善提案、フィードバックは[GitHub Issues](https://github.com/r-company-net/rc-postflow/issues)を利用してください。
 
 ## 公開前チェック項目
 
 - v0.3.0の公開日を確定する
 - ビルドバージョン、`v0.3.0`タグ、GitHub Release表記が一致することを最終確認する
-- GitHub公開リポジトリとIssues窓口を記載する
 - 現在のv0.3.0ビルドでThreads実投稿を手動確認する
 - 将来PostgreSQLを正式サポート対象にする場合は、実DBで接続、Migration、CRUD、Scheduler、予約投稿処理を検証する
 - ブランド資産の対象ファイル、権利帰属、再配布条件を最終確認する
