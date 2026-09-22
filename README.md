@@ -133,6 +133,34 @@ SQLiteプロファイルでは、プロジェクトルートからの相対パ�
 
 起動後、ブラウザで`http://localhost:8080/login`を開き、設定した管理者Credentialでログインします。「新規投稿」からタイトル、本文、現在より後の予約日時、投稿先のThreadsを指定して登録してください。登録直後の状態は「予約済み」です。
 
+#### Windowsで日本語ログが文字化けする場合
+
+JavaソースとログファイルはUTF-8です。標準出力は、Windows PowerShellやVS Codeの統合ターミナルが使用するコードページにJVMが合わせます。通常は端末側の追加設定なしで日本語を表示できます。
+
+表示が崩れる場合は、起動するターミナルで現在の設定を確認してください。
+
+```powershell
+chcp
+[Console]::OutputEncoding
+java -XshowSettings:properties -version 2>&1 |
+    Select-String 'native.encoding|stdout.encoding|stderr.encoding'
+```
+
+端末とJVMの出力文字コードが一致しない場合は、同じPowerShellプロセスをUTF-8へ揃えてから起動します。
+
+```powershell
+chcp 65001
+[Console]::InputEncoding = [System.Text.UTF8Encoding]::new($false)
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new($false)
+.\gradlew.bat bootRun --args="--spring.profiles.active=sqlite"
+```
+
+ファイルログは端末のコードページにかかわらずUTF-8で保存されます。PowerShell 7では次のように確認できます。
+
+```powershell
+Get-Content -Encoding utf8 .\logs\rc-postflow.log
+```
+
 ## 環境変数
 
 ### 起動時に必須

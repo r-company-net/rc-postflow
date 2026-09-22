@@ -24,6 +24,9 @@ threads:
     read-timeout: ${THREADS_READ_TIMEOUT:10s}
 
 logging:
+  charset:
+    file: UTF-8
+
   file:
     name: logs/rc-postflow.log
 
