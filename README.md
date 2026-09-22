@@ -4,7 +4,7 @@
 
 RC-PostFlowは、SNS投稿の登録、予約、配信結果の確認を一元管理し、SNS運用にかかる作業時間を減らすための投稿管理アプリケーションです。
 
-今回の公開版はRC-PostFlow v0.3.0です。Threadsへの予約投稿に対応したMVPで、単一の管理者が単一インスタンスで運用することを前提としています。
+今回の公開版はRC-PostFlow v0.3.1です。Threadsへの予約投稿に対応したMVPで、単一の管理者が単一インスタンスで運用することを前提としています。
 
 ## 画面イメージ
 
@@ -12,7 +12,7 @@ RC-PostFlowは、SNS投稿の登録、予約、配信結果の確認を一元管
 
 このスクリーンショットは、外部SNSへの投稿を無効にした撮影専用環境で、すべて架空の投稿データを使用して撮影しています。
 
-## v0.3.0で利用できる機能
+## v0.3.1で利用できる機能
 
 - Threads投稿の登録、一覧表示、編集、削除
 - 日時を指定したThreads予約投稿
@@ -24,7 +24,7 @@ RC-PostFlowは、SNS投稿の登録、予約、配信結果の確認を一元管
 
 投稿先はThreadsのみです。即時投稿、画像添付、連続スレッド投稿には対応していません。
 
-v0.3.0の正式サポート対象データベースはSQLiteのみです。PostgreSQL向けのコード、設定、Flyway Migrationは残存していますが、v0.3.0では未検証であり、正式サポート対象外です。
+v0.3.1の正式サポート対象データベースはSQLiteのみです。PostgreSQL向けのコード、設定、Flyway Migrationは残存していますが、v0.3.1では未検証であり、正式サポート対象外です。
 
 ## 投稿状態とKPI
 
@@ -47,10 +47,10 @@ KPIは全投稿を対象とした集計です。画面のキーワード、チ�
 | Spring Boot | 3.5.16 | 現行ビルド設定と自動テストで確認 |
 | Gradle Wrapper | 8.14.5 | Windowsで自動テストを実行 |
 | SQLite JDBC | 3.49.1.0 | 通常SQLiteプロファイルの設定、およびテスト用インメモリDBで確認 |
-| PostgreSQL JDBC | 42.7.11 | コードと設定が残存。v0.3.0では実DB接続未検証、正式サポート対象外 |
+| PostgreSQL JDBC | 42.7.11 | コードと設定が残存。v0.3.1では実DB接続未検証、正式サポート対象外 |
 | テンプレート | Thymeleaf | 現行画面で使用 |
 
-v0.3.0の正式サポート対象はSQLiteのみです。PostgreSQL向けのコード、設定、Migrationは残存していますが、実PostgreSQL環境での接続、Migration、CRUD、予約投稿処理は未検証です。PostgreSQLに関する記載は参考情報であり、動作を保証するものではありません。
+v0.3.1の正式サポート対象はSQLiteのみです。PostgreSQL向けのコード、設定、Migrationは残存していますが、実PostgreSQL環境での接続、Migration、CRUD、予約投稿処理は未検証です。PostgreSQLに関する記載は参考情報であり、動作を保証するものではありません。
 
 ## 初回セットアップ
 
@@ -65,7 +65,7 @@ GitHubの[RC-PostFlowリポジトリ](https://github.com/r-company-net/rc-postfl
 
 Gradleの個別インストールは不要です。リポジトリに含まれるGradle Wrapperを使用します。`data/`と`logs/`は空の`.gitkeep`を含むため、clone直後に追加のディレクトリ作成は必要ありません。SQLite DBとログ本体はGit管理対象外です。
 
-v0.3.0の正式な導入方法は、ソースコードを取得してGradle Wrapperから起動する方法です。実行可能JAR単体の配布・起動は正式サポート対象ではありません。
+v0.3.1の正式な導入方法は、ソースコードを取得してGradle Wrapperから起動する方法です。実行可能JAR単体の配布・起動は正式サポート対象ではありません。
 
 ```powershell
 # Windows PowerShell
@@ -180,7 +180,7 @@ Get-Content -Encoding utf8 .\logs\rc-postflow.log
 
 `THREADS_ACCESS_TOKEN`がなくてもアプリケーション自体は起動しますが、期限を迎えた投稿は設定エラーとなり`ERROR`へ遷移します。TokenはMetaの正式な手順で取得・管理し、Repositoryへ保存しないでください。
 
-`THREADS_APP_ID`と`THREADS_APP_SECRET`は設定クラスに項目がありますが、現行の投稿処理では使用していません。v0.3.0にはAccess Tokenの取得・更新機能はなく、別途用意した`THREADS_ACCESS_TOKEN`を使用します。
+`THREADS_APP_ID`と`THREADS_APP_SECRET`は設定クラスに項目がありますが、現行の投稿処理では使用していません。v0.3.1にはAccess Tokenの取得・更新機能はなく、別途用意した`THREADS_ACCESS_TOKEN`を使用します。
 
 ### 任意設定
 
@@ -194,7 +194,7 @@ Get-Content -Encoding utf8 .\logs\rc-postflow.log
 
 ## PostgreSQL実装について（参考情報・正式サポート対象外）
 
-PostgreSQL向けのコード、`application-postgres.yaml`、`db/migration/postgresql`、JDBC依存関係は残存しています。ただし、v0.3.0では実PostgreSQL環境を使用した接続、Migration、CRUD、Scheduler、Threads予約投稿を検証しておらず、正式サポート対象外です。以下は実装確認用の参考情報であり、通常の初回導入手順ではありません。
+PostgreSQL向けのコード、`application-postgres.yaml`、`db/migration/postgresql`、JDBC依存関係は残存しています。ただし、v0.3.1では実PostgreSQL環境を使用した接続、Migration、CRUD、Scheduler、Threads予約投稿を検証しておらず、正式サポート対象外です。以下は実装確認用の参考情報であり、通常の初回導入手順ではありません。
 
 PostgreSQLプロファイルを起動するには、次の環境変数が必要です。
 
@@ -233,7 +233,7 @@ PostgreSQLプロファイルでは`classpath:db/migration/postgresql`のMigratio
 
 Schedulerは60秒の固定delayで動作し、予約日時を過ぎた`PENDING`投稿を取得します。投稿開始前に`SCHEDULED`を保存し、Threads投稿成功時は`POSTED`、例外発生時は`ERROR`へ更新します。
 
-v0.3.0には次の制約があります。
+v0.3.1には次の制約があります。
 
 - 単一管理者、単一アプリケーションインスタンスでの運用を前提とします。
 - 自動リトライはありません。`ERROR`はSchedulerの再処理対象になりません。
@@ -242,7 +242,7 @@ v0.3.0には次の制約があります。
 - 外部投稿IDはDBへ保存しておらず、重複投稿を完全には防止できません。失敗表示の投稿を再登録する前に、必ずThreads側の投稿結果を確認してください。
 - 投稿対象の排他制御や複数インスタンス間の分散ロックは実装していません。
 
-## v0.3.0では未対応の機能
+## v0.3.1では未対応の機能
 
 - X、Bluesky、LinkedInなどThreads以外のSNS投稿
 - 複数投稿をつなげる連続スレッド投稿
@@ -255,11 +255,11 @@ v0.3.0には次の制約があります。
 
 ## テスト結果
 
-2026年9月22日に、Windows 11、Eclipse Temurin 25.0.3 LTS、Gradle Wrapper 8.14.5で自動テストを実行し、57件すべて成功しました（失敗0、エラー0、スキップ0）。テストではSQLiteのインメモリDBとモック／テスト用HTTP応答を使用しています。
+2026年9月22日に、v0.3.1を対象としてWindows 11、Eclipse Temurin 25.0.3 LTS、Gradle Wrapper 8.14.5で自動テストを実行し、57件すべて成功しました（失敗0、エラー0、スキップ0）。テストではSQLiteのインメモリDBとモック／テスト用HTTP応答を使用しています。
 
 この57件には、CRUD、Validation、Security、Scheduler、Threadsクライアント、投稿状態表示、KPI集計などのテストが含まれます。実際のThreadsサービスへの投稿、および実PostgreSQLへの接続は、この自動テストの確認範囲には含まれません。
 
-Threadsへの実投稿成功は[サニタイズ済みの過去検証履歴](docs/verification-history.md)に記録されていますが、現在のv0.3.0ビルドに対する最新の手動実投稿試験とは区別してください。公開前または導入環境ごとに、有効なTokenを使用した手動確認が必要です。
+2026年9月22日に現行v0.3.1コードのSQLite環境でThreads予約投稿を確認しました。Access Token未設定時の失敗1件を確認した後、Token設定後の予約投稿が成功し、RC-PostFlow側で`POSTED`、Threads側で実投稿を確認しています。機密情報を除いた記録は[検証履歴](docs/verification-history.md)を参照してください。
 
 テストの実行方法は次のとおりです。
 
@@ -277,9 +277,9 @@ Threadsへの実投稿成功は[サニタイズ済みの過去検証履歴](docs
 
 ### 現行の運用・確認手順
 
-- [v0.3.0 Release Notes](docs/release-notes-v0.3.0.md) — 公開内容、検証範囲、既知の制約、公開前確認事項
+- [v0.3.1 Release Notes](docs/release-notes-v0.3.1.md) — 公開内容、検証範囲、既知の制約、公開前確認事項
 - [撮影専用環境](docs/screenshot-environment.md) — 通常DBと分離し、外部投稿を無効にした画面撮影手順
-- [過去の検証履歴](docs/verification-history.md) — `v0.2.0-pre1`の検証実績を公開用にサニタイズした記録
+- [検証履歴](docs/verification-history.md) — 現行版と`v0.2.0-pre1`の検証実績を公開用にサニタイズした記録
 
 ## ライセンスとブランド資産
 
@@ -299,12 +299,12 @@ RC-PostFlow／RC-SIP／R-Companyのロゴ・アイコンなどのブランド画
 
 公開Repositoryは[https://github.com/r-company-net/rc-postflow](https://github.com/r-company-net/rc-postflow)です。バグ報告、改善提案、フィードバックは[GitHub Issues](https://github.com/r-company-net/rc-postflow/issues)を利用してください。
 
-今回の公開版はRC-PostFlow v0.3.0で、ビルド上のバージョンも`0.3.0`です。`v0.2.0`および`v0.2.0-pre1`は過去の開発履歴で使用したタグ名ですが、初回OSS公開用の履歴には引き継ぎません。`v0.3.0`タグとGitHub Releaseはまだ作成していません。
+今回の公開版はRC-PostFlow v0.3.1で、ビルド上のバージョンも`0.3.1`です。既存の`v0.3.0`タグはWindowsログ文字化け修正前の履歴として変更せず保持します。`v0.2.0`および`v0.2.0-pre1`は過去の開発履歴で使用したタグ名ですが、初回OSS公開用の履歴には引き継ぎません。`v0.3.1`タグはまだ作成せず、GitHub Releaseも公開していません。
 
 ### 公開前の必須確認
 
 - ブランド資産の対象ファイルと権利帰属を最終確認し、`BRANDING.md`へ反映する
 - ブランド画像を除去・置換した配布物でもアプリケーションが動作することを確認する
-- `build.gradle`、README、Release Note、`v0.3.0`タグ、GitHub Releaseのバージョン表記が一致することを最終確認する
+- `build.gradle`、README、Release Note、作成予定の`v0.3.1`タグ、GitHub Releaseのバージョン表記が一致することを最終確認する
 - 将来PostgreSQLを正式サポート対象にする場合は、実DBで接続、Migration、CRUD、Scheduler、予約投稿処理を検証する
-- 有効なAccess Tokenを使用してThreads実投稿を手動確認する
+- GitHub Releaseを公開する前に、v0.3.1の検証結果と既知の制約がドラフトへ反映されていることを確認する
