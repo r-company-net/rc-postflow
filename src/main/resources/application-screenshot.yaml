@@ -1,0 +1,26 @@
+spring:
+  config:
+    activate:
+      on-profile: screenshot
+
+  datasource:
+    url: jdbc:sqlite:./data/rc-postflow-screenshot.db
+    driver-class-name: org.sqlite.JDBC
+
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+
+  flyway:
+    locations:
+      - classpath:db/migration/sqlite
+      - classpath:db/migration/screenshot
+
+# PostScheduler is excluded from the screenshot profile. The unroutable local endpoint is an additional
+# safeguard against accidental external publication in the screenshot profile.
+threads:
+  base-url: http://127.0.0.1:9
+  app-id: ""
+  app-secret: ""
+  access-token: ""
+  connect-timeout: 100ms
+  read-timeout: 100ms

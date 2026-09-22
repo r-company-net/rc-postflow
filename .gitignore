@@ -1,0 +1,61 @@
+HELP.md
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### Runtime data and logs ###
+/data/*
+!/data/.gitkeep
+/logs/*
+!/logs/.gitkeep
+hs_err_pid*.log
+replay_pid*.log
+
+### Local secrets, archives, and backups ###
+.env
+.env.*
+*.zip
+*.tar
+*.tar.gz
+*.bak
+*.backup
+*.dump
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/

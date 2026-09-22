@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: ${RC_POSTFLOW_DB_URL}
+    username: ${RC_POSTFLOW_DB_USERNAME}
+    password: ${RC_POSTFLOW_DB_PASSWORD}
+
+  flyway:
+    locations: classpath:db/migration/postgresql

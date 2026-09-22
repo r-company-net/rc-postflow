@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">RC-PostFlow</title>
+    <link rel="icon" type="image/png" sizes="64x64" th:href="@{/images/rc-postflow-icon-64.png}" href="/images/rc-postflow-icon-64.png">
+    <link rel="stylesheet" th:href="@{/css/app.css}" href="/css/app.css">
+    <script defer th:src="@{/js/app.js}" src="/js/app.js"></script>
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <div class="side-brand">
+            <img class="brand-mark" th:src="@{/images/rc-postflow-icon-64.png}" src="/images/rc-postflow-icon-64.png" width="48" height="48" alt="">
+            <div>
+                <div class="brand-name"><span class="brand-prefix">RC-</span><span class="brand-post">Post</span><span class="brand-flow">Flow</span></div>
+                <div class="brand-description">Content Distribution Workflow</div>
+            </div>
+        </div>
+        <nav class="side-nav" aria-label="メインメニュー">
+            <span class="nav-item is-disabled" aria-disabled="true">
+                <span class="nav-icon" aria-hidden="true">◇</span><span>ダッシュボード</span>
+            </span>
+            <a class="nav-item is-active" th:href="@{/}" href="/" aria-current="page">
+                <span class="nav-icon" aria-hidden="true">▤</span><span>投稿管理</span>
+            </a>
+        </nav>
+        <div class="powered-by">
+            <span class="powered-label">Powered by <strong>RC-SIP</strong></span>
+            <span>RC Smart Integration Platform</span>
+        </div>
+    </aside>
+
+    <header class="topbar">
+        <div class="topbar-brand">
+            <img class="mini-mark" th:src="@{/images/rc-postflow-icon-64.png}" src="/images/rc-postflow-icon-64.png" width="32" height="32" alt="">
+            <div class="topbar-title">
+                <strong><span class="brand-prefix">RC-</span><span class="brand-post">Post</span><span class="brand-flow">Flow</span></strong>
+                <p th:text="${message}">SNS運用を「作業」から「仕組み」に変えるコンテンツ配信基盤</p>
+            </div>
+        </div>
+        <div class="account-area">
+            <div class="account-summary">
+                <span class="avatar" aria-hidden="true">管</span>
+                <span><strong>管理者</strong><small>ログイン中</small></span>
+            </div>
+            <form class="logout-form" th:action="@{/logout}" method="post">
+                <button class="logout-button" type="submit">ログアウト</button>
+            </form>
+        </div>
+    </header>
+
+    <main>
+        <div class="page-head">
+            <div class="page-copy">
+                <h1>投稿管理</h1>
+                <p>登録・確認・予約・配信状態の管理をひとつの画面で行います</p>
+            </div>
+            <section class="kpi-grid" aria-label="投稿状況">
+                <div class="kpi-card kpi-scheduled"><span class="kpi-symbol" aria-hidden="true">予</span><span><small>投稿予約</small><strong id="kpi-scheduled">0 件</strong></span></div>
+                <div class="kpi-card kpi-posted"><span class="kpi-symbol" aria-hidden="true">済</span><span><small>投稿済み</small><strong id="kpi-posted">0 件</strong></span></div>
+                <div class="kpi-card kpi-error"><span class="kpi-symbol" aria-hidden="true">!</span><span><small>投稿失敗</small><strong id="kpi-error">0 件</strong></span></div>
+            </section>
+        </div>
+
+        <div class="global-alert" th:if="${errorMessage != null}" role="alert">
+            <span aria-hidden="true">!</span><p th:text="${errorMessage}">指定された投稿が見つかりません。</p>
+        </div>
+
+        <section class="workspace" th:classappend="${errorMessage != null} ? 'has-alert' : ''">
+            <section class="card form-card">
+                <div class="card-head">
+                    <div class="card-title"><span class="title-icon" aria-hidden="true">✎</span><h2 th:text="${editing} ? '投稿編集' : '投稿登録'">投稿登録</h2></div>
+                    <span class="editing-label" th:if="${editing}">編集中</span>
+                </div>
+                <div class="form-scroll">
+                    <form th:object="${post}" th:action="${editing} ? @{/posts/{id}(id=${postId})} : @{/posts}" method="post">
+                        <div class="validation-summary" th:if="${#fields.hasAnyErrors()}" role="alert">
+                            <strong>入力内容を確認してください</strong>
+                            <ul><li th:each="error : ${#fields.allErrors()}" th:text="${error}">入力エラー</li></ul>
+                        </div>
+
+                        <div class="field">
+                            <label for="title">タイトル</label>
+                            <p class="field-help">管理用のタイトルです。SNSには投稿されません</p>
+                            <input id="title" type="text" th:field="*{title}" maxlength="255" placeholder="例）今日の気づき" th:classappend="${#fields.hasErrors('title')} ? 'is-invalid' : ''">
+                            <p class="field-error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">タイトルエラー</p>
+                        </div>
+
+                        <div class="field">
+                            <label for="body">本文</label>
+                            <p class="field-help">実際にSNSに投稿される内容です</p>
+                            <textarea id="body" th:field="*{body}" rows="5" placeholder="投稿する内容を入力してください" th:classappend="${#fields.hasErrors('body')} ? 'is-invalid' : ''" aria-describedby="body-counter"></textarea>
+                            <p class="text-counter" id="body-counter">投稿テキスト <span id="body-count">0</span> / 500文字（URL含む）</p>
+                            <p class="field-error" th:if="${#fields.hasErrors('body')}" th:errors="*{body}">本文エラー</p>
+                            <p class="field-error" th:if="${#fields.hasErrors('threadsTextWithinLimit')}" th:errors="*{threadsTextWithinLimit}">文字数エラー</p>
+                        </div>
+
+                        <div class="field">
+                            <label for="url">URL <span class="optional">任意</span></label>
+                            <input id="url" type="text" inputmode="url" th:field="*{url}" placeholder="https://example.com" th:classappend="${#fields.hasErrors('url')} ? 'is-invalid' : ''">
+                            <p class="field-error" th:if="${#fields.hasErrors('url')}" th:errors="*{url}">URLエラー</p>
+                        </div>
+
+                        <div class="field">
+                            <span class="field-label">投稿先</span>
+                            <div class="channel-list">
+                                <label class="channel-row available"><span class="channel-main"><input type="checkbox" th:field="*{channels}" value="THREADS"><span>Threads</span></span><span class="channel-state">利用可能</span></label>
+                                <label class="channel-row disabled" aria-label="X（未サポート）"><span class="channel-main"><input type="checkbox" disabled><span>X</span></span><span class="channel-state">近日対応予定</span></label>
+                                <label class="channel-row disabled"><span class="channel-main"><input type="checkbox" disabled><span>Bluesky</span></span><span class="channel-state">将来対応</span></label>
+                                <label class="channel-row disabled"><span class="channel-main"><input type="checkbox" disabled><span>LinkedIn</span></span><span class="channel-state">将来対応</span></label>
+                            </div>
+                            <p class="field-note">将来的に複数SNSへの同時投稿を検討</p>
+                            <p class="field-error" th:if="${#fields.hasErrors('channels')}" th:errors="*{channels}">投稿先エラー</p>
+                        </div>
+
+                        <div class="field">
+                            <label for="scheduledAt">投稿日時</label>
+                            <input id="scheduledAt" type="datetime-local" th:field="*{scheduledAt}" th:classappend="${#fields.hasErrors('scheduledAt')} ? 'is-invalid' : ''">
+                            <p class="field-error" th:if="${#fields.hasErrors('scheduledAt')}" th:errors="*{scheduledAt}">投稿日時エラー</p>
+                        </div>
+
+                        <div class="form-actions">
+                            <button class="primary-button" type="submit" th:text="${editing} ? '投稿を更新' : '投稿を登録'">投稿を登録</button>
+                            <a class="cancel-button" th:if="${editing}" th:href="@{/}">キャンセル</a>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <section class="card list-card">
+                <div class="card-head list-head">
+                    <div class="card-title"><span class="title-icon" aria-hidden="true">▤</span><h2>投稿一覧</h2></div>
+                    <span class="post-count" id="post-count" aria-live="polite">全 0 件</span>
+                </div>
+                <div class="filters" aria-label="投稿一覧フィルター">
+                    <div class="filter-field search-field"><label for="search-filter">タイトル・本文</label><input id="search-filter" type="search" placeholder="タイトル・本文で検索"></div>
+                    <div class="filter-field"><label for="channel-filter">チャネル</label><select id="channel-filter"><option value="all">すべて</option><option value="THREADS">Threads</option></select></div>
+                    <div class="filter-field"><label for="status-filter">状態</label><select id="status-filter"><option value="all">すべて</option><option value="PENDING">予約済み</option><option value="SCHEDULED">投稿処理中</option><option value="POSTED">投稿済み</option><option value="ERROR">投稿失敗</option></select></div>
+                </div>
+                <p class="filter-summary" id="filter-summary" aria-live="polite">対象：すべての投稿</p>
+
+                <div class="table-wrap">
+                    <table>
+                        <thead><tr><th>タイトル</th><th>投稿日時</th><th>チャネル</th><th>状態</th><th>操作</th></tr></thead>
+                        <tbody id="post-list">
+                        <tr class="post-row" th:each="post : ${posts}" th:attr="data-title=${post.title},data-body=${post.body},data-datetime=${post.scheduledAt},data-channel=${post.channels},data-status=${post.status.name()}">
+                            <td class="title-cell" th:text="${post.title}" th:title="${post.title}">投稿タイトル</td>
+                            <td class="date-cell" th:text="${post.scheduledAt}" th:attr="data-value=${post.scheduledAt}">2026-07-08T20:00</td>
+                            <td class="channel-cell" th:text="${post.channels}">THREADS</td>
+                            <td><span class="status-badge" th:classappend="|status-${#strings.toLowerCase(post.status.name())}|" th:switch="${post.status.name()}"><span th:case="'PENDING'">予約済み</span><span th:case="'SCHEDULED'">投稿処理中</span><span th:case="'POSTED'">投稿済み</span><span th:case="'ERROR'">投稿失敗</span><span th:case="*" th:text="${post.status}">不明</span></span></td>
+                            <td class="actions-cell">
+                                <a class="edit-button" th:href="@{/posts/{id}/edit(id=${post.id})}">編集</a>
+                                <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post" onsubmit="return confirm('この投稿を削除します。よろしいですか？');"><button class="delete-button" type="submit">削除</button></form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="empty-state" id="empty-state" hidden>条件に一致する投稿はありません。</div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <footer><span>© R-Company</span><span class="keywords"><b>Speed</b><i>・</i><b>Challenge</b><i>・</i><b>Response</b></span></footer>
+</div>
+</body>
+</html>

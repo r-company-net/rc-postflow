@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:sqlite:./data/rc-postflow.db
+    driver-class-name: org.sqlite.JDBC
+
+  jpa:
+    database-platform: org.hibernate.community.dialect.SQLiteDialect
+
+  flyway:
+    locations: classpath:db/migration/sqlite

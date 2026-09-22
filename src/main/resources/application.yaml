@@ -1,0 +1,32 @@
+spring:
+  application:
+    name: rc-postflow
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    enabled: true
+
+rc-postflow:
+  security:
+    admin:
+      username: ${RC_POSTFLOW_ADMIN_USERNAME:}
+      password: ${RC_POSTFLOW_ADMIN_PASSWORD:}
+  
+threads:
+    base-url: https://graph.threads.net
+    app-id: ${THREADS_APP_ID:}
+    app-secret: ${THREADS_APP_SECRET:}
+    access-token: ${THREADS_ACCESS_TOKEN:}
+    connect-timeout: ${THREADS_CONNECT_TIMEOUT:3s}
+    read-timeout: ${THREADS_READ_TIMEOUT:10s}
+
+logging:
+  file:
+    name: logs/rc-postflow.log
+
+  level:
+    root: INFO
+    com.rcpostflow: INFO
